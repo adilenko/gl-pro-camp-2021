@@ -2,5 +2,6 @@
   "url":"https://my.com",
   "port": "1542",
   "user": "adilenko",
-  "password": "12345"
+  "password": "12345",
+  "someIntProp": 123
 }
