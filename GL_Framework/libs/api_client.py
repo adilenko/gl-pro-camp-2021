@@ -9,14 +9,14 @@ class CommonMethods:
         response = self.api.post(url=url, json=payload_model, **kwargs)
         return response
 
-    def get(self, url, param, **kwargs):
-        response = self.api.get(url=f"{url}/{param}", **kwargs)
+    def get(self, url, params, **kwargs):
+        response = self.api.get(url=f"{url}", params=params, **kwargs)
         return response
 
     def put(self, url, payload_model, **kwargs):
         response = self.api.put(url=url, json=payload_model, **kwargs)
         return response
 
-    def delete(self, url, param, **kwargs):
-        response = self.api.delete(url=f"{url}/{param}", **kwargs)
+    def delete(self, url, **kwargs):
+        response = self.api.delete(url=f"{url}", **kwargs)
         return response
