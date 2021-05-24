@@ -1,10 +1,11 @@
 import os
 import json
 import constants as const
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 import yaml
 
 
+# local config stored not in variables but in json file
 @dataclass
 class EnvConfigModel:
     url: str = None
@@ -36,6 +37,18 @@ def get_local_config(path=None):
         prop_name = var[1:] if var[0] == '_' else var
         config.__setattr__(var, conf.get(prop_name, None))
     return config
+
+
+def update_local_json_config(upd_params, path=None):
+    if path is None:
+        path = const.CONFIG_FILE
+    config = get_local_config(path)
+    for key, val in upd_params.items():
+        if key in config.__dict__:
+            config.__setattr__(key, val)
+    config_dic = asdict(config)
+    with open(path, 'w') as f:
+        json.dump(config_dic, f)
 
 
 def get_config_form_env_variable():
@@ -92,3 +105,5 @@ def get_config(yaml_conf_file=None, local_conf_file=None):
                 final_config.__setattr__(var, conf.__getattribute__(var))
                 break
     return final_config
+
+

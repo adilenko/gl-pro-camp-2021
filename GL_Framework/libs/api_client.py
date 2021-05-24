@@ -1,8 +1,8 @@
-from requests import Session
+from api_session import ApiSession
 
-class CommonMethods:
+class ApiClient:
     def __init__(self, api):
-        self.api: Session = api
+        self.api = ApiSession().get_default_session()
 
 
     def post(self, url,  payload_model, **kwargs):
