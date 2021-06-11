@@ -57,11 +57,10 @@ def get_config_from_yaml(path=None):
     """
     Read config data from yaml file
     Properties in file has the same name as in class
-
     """
     config = EnvConfigModel()
     if path is None:
-        return config
+        path = const.CONFIG_FILE
     with open(path) as f:
         yaml_conf = yaml.safe_load(f)
     conf_var = config.__dict__.keys()
@@ -96,5 +95,8 @@ def get_config_variable_by_name(name, yaml_conf_file=None):
     config = get_config(yaml_conf_file)
     return config.__getattribute__(name)
 
+res = get_config_variable_by_name("user")
+print(res)
+
 res = get_config_variable_by_name("timeout")
-a=1
+print(res)
