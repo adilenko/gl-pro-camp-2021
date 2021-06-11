@@ -1,8 +1,9 @@
 import os
-import json
+
 import constants as const
 from dataclasses import dataclass, asdict
 import yaml
+from local_config import LocalConfig
 
 
 # local config stored not in variables but in json file
@@ -13,42 +14,27 @@ class EnvConfigModel:
     user: str = None
     password: str = None
     # properties which should be converted will be hidden
-    _someIntProp: int = None
+    _timeout: int = None
 
     @property
-    def someIntProp(self):
-        return int(self._someIntProp) if self._someIntProp else None
+    def timeout(self):
+        return int(self._timeout) if self._timeout else None
 
 
-def get_local_config(path=None):
+def get_local_config():
     """
     Read data from local json config
     Properties in file has the same name as in class
     """
     config = EnvConfigModel()
     variables = config.__dict__.keys()
-    if path is None:
-        path = const.CONFIG_FILE
-    with open(path) as file:
-        conf = json.load(file)
+    conf= dict((name, getattr(LocalConfig, name)) for name in dir(LocalConfig) if not name.startswith('__'))
     for var in variables:
         # remove "_" from the name of a hidden properties
         # because in file properties do not have such prefix
         prop_name = var[1:] if var[0] == '_' else var
         config.__setattr__(var, conf.get(prop_name, None))
     return config
-
-
-def update_local_json_config(upd_params, path=None):
-    if path is None:
-        path = const.CONFIG_FILE
-    config = get_local_config(path)
-    for key, val in upd_params.items():
-        if key in config.__dict__:
-            config.__setattr__(key, val)
-    config_dic = asdict(config)
-    with open(path, 'w') as f:
-        json.dump(config_dic, f)
 
 
 def get_config_form_env_variable():
@@ -87,10 +73,10 @@ def get_config_from_yaml(path=None):
     return config
 
 
-def get_config(yaml_conf_file=None, local_conf_file=None):
+def get_config(yaml_conf_file=None):
     """
     Read config data from Env Var, yaml file and local
-    json file.
+    config class
      If property is found in some source it will not be
     searched in another
     """
@@ -98,7 +84,7 @@ def get_config(yaml_conf_file=None, local_conf_file=None):
     conf_var = final_config.__dict__.keys()
     configs = [get_config_form_env_variable(),
                get_config_from_yaml(yaml_conf_file),
-               get_local_config(local_conf_file)]
+               get_local_config()]
     for var in conf_var:
         for conf in configs:
             if conf.__getattribute__(var):
@@ -106,4 +92,9 @@ def get_config(yaml_conf_file=None, local_conf_file=None):
                 break
     return final_config
 
+def get_config_variable_by_name(name, yaml_conf_file=None):
+    config = get_config(yaml_conf_file)
+    return config.__getattribute__(name)
 
+res = get_config_variable_by_name("timeout")
+a=1
