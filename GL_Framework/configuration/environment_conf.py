@@ -3,37 +3,33 @@ import os
 import constants as const
 from dataclasses import dataclass, asdict
 import yaml
-from local_config import LocalConfig
+from configuration.local_config import LocalConfig
 
 
 # local config stored not in variables but in json file
 @dataclass
-class EnvConfigModel:
-    url: str = None
-    port: str = None
-    user: str = None
-    password: str = None
+class ConfigModel:
+    base_url: str = "base_url"
+    port: str = "port"
+    user: str = "user"
+    password: str = "password"
     # properties which should be converted will be hidden
-    _timeout: int = None
+    _timeout: str = "timeout"
 
     @property
     def timeout(self):
         return int(self._timeout) if self._timeout else None
-
 
 def get_local_config():
     """
     Read data from local json config
     Properties in file has the same name as in class
     """
-    config = EnvConfigModel()
-    variables = config.__dict__.keys()
+    config = ConfigModel()
+    # convert class to dict
     conf= dict((name, getattr(LocalConfig, name)) for name in dir(LocalConfig) if not name.startswith('__'))
-    for var in variables:
-        # remove "_" from the name of a hidden properties
-        # because in file properties do not have such prefix
-        prop_name = var[1:] if var[0] == '_' else var
-        config.__setattr__(var, conf.get(prop_name, None))
+    for key, val in config.__dict__.items():
+        config.__setattr__(key, conf.get(val, None))
     return config
 
 
@@ -42,14 +38,10 @@ def get_config_form_env_variable():
     Read data from env variables.
     Env Variable should have name FW_ENV_PROPERTYNAME
     """
-    config = EnvConfigModel()
-    variables = config.__dict__.keys()
-    for var in variables:
-        # remove "_" from the name of a hidden properties
-        # because env variables do not have such prefix
-        prop_name = var[1:] if var[0] == '_' else var
-        sys_env_name = const.ENV_VAR_PREFIX + str(prop_name).upper()
-        config.__setattr__(var, os.environ.get(sys_env_name, None))
+    config = ConfigModel()
+    for key, val in config.__dict__.items():
+        sys_env_name = const.ENV_VAR_PREFIX + str(val).upper()
+        config.__setattr__(key, os.environ.get(sys_env_name, None))
     return config
 
 
@@ -58,17 +50,13 @@ def get_config_from_yaml(path=None):
     Read config data from yaml file
     Properties in file has the same name as in class
     """
-    config = EnvConfigModel()
+    config = ConfigModel()
     if path is None:
         path = const.CONFIG_FILE
     with open(path) as f:
         yaml_conf = yaml.safe_load(f)
-    conf_var = config.__dict__.keys()
-    for var in conf_var:
-        # remove "_" from the name of a hidden properties
-        # because in file properties does not have such prefix
-        prop_name = var[1:] if var[0] == '_' else var
-        config.__setattr__(var, yaml_conf.get(prop_name, None))
+    for key, val in config.__dict__.items():
+        config.__setattr__(key, yaml_conf.get(val, None))
     return config
 
 
@@ -79,7 +67,7 @@ def get_config(yaml_conf_file=None):
      If property is found in some source it will not be
     searched in another
     """
-    final_config = EnvConfigModel()
+    final_config = ConfigModel()
     conf_var = final_config.__dict__.keys()
     configs = [get_config_form_env_variable(),
                get_config_from_yaml(yaml_conf_file),
@@ -89,14 +77,10 @@ def get_config(yaml_conf_file=None):
             if conf.__getattribute__(var):
                 final_config.__setattr__(var, conf.__getattribute__(var))
                 break
+            final_config.__setattr__(var, None)
     return final_config
 
 def get_config_variable_by_name(name, yaml_conf_file=None):
     config = get_config(yaml_conf_file)
     return config.__getattribute__(name)
 
-res = get_config_variable_by_name("user")
-print(res)
-
-res = get_config_variable_by_name("timeout")
-print(res)
