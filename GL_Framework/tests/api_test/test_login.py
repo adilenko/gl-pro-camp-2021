@@ -1,5 +1,5 @@
 import pytest
-from my_libs.api_client import ApiClient
+from libs.api_client import ApiClient
 from configuration.config import ConfigModel, get_config_variable_by_name
 
 

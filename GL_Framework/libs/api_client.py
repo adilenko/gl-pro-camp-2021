@@ -1,4 +1,4 @@
-from my_libs.api_session import ApiSession
+from libs.api_session import ApiSession
 from configuration.config import get_config, get_config_variable_by_name, ConfigModel
 from helpers.string_convetor import str_to_base64
 from models.Models import LoginModel
