@@ -1,7 +1,7 @@
 import os
 
 import constants as const
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 import yaml
 from configuration.local_config import LocalConfig
 
@@ -20,6 +20,7 @@ class ConfigModel:
     def timeout(self):
         return int(self._timeout) if self._timeout else None
 
+
 def get_local_config():
     """
     Read data from local json config
@@ -27,7 +28,7 @@ def get_local_config():
     """
     config = ConfigModel()
     # convert class to dict
-    conf= dict((name, getattr(LocalConfig, name)) for name in dir(LocalConfig) if not name.startswith('__'))
+    conf = dict((name, getattr(LocalConfig, name)) for name in dir(LocalConfig) if not name.startswith('__'))
     for key, val in config.__dict__.items():
         config.__setattr__(key, conf.get(val, None))
     return config
@@ -80,7 +81,7 @@ def get_config(yaml_conf_file=None):
             final_config.__setattr__(var, None)
     return final_config
 
+
 def get_config_variable_by_name(name, yaml_conf_file=None):
     config = get_config(yaml_conf_file)
     return config.__getattribute__(name)
-
