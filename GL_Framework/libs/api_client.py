@@ -25,7 +25,8 @@ class ApiClient:
         ApiClient.api_session.http_session.headers.update({"authorization": f"Basic {aut}"})
         login_model = asdict(LoginModel(expiry=86400, login_from="login page"))
         response = ApiClient.api_session.post(url, login_model)
-        ApiClient.api_session.http_session.headers.update({"x-token": f"{response.json()['token']}"})
+        if response.status_code == 200:
+            ApiClient.api_session.http_session.headers.update({"x-token": f"{response.json()['token']}"})
         return response
 
     @staticmethod
@@ -42,8 +43,3 @@ class ApiClient:
         params = asdict(model(folder_id=folder_id) if folder_id else model)
         response = ApiClient.api_session.get(url, params)
         return response
-
-
-ApiClient.loggin("gl-procamp-2021@globallogic.com", "DXdUVEFNpHA8LXm")
-res = ApiClient.get_files()
-a=1
