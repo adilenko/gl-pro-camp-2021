@@ -22,10 +22,13 @@ def test_invalide_login():
         assert_that(resp.status_code).is_equal_to(401)
         assert_that(resp.text).is_equal_to("You are required to log in with a valid username and password")
 
-# def test_file(api_session):
-#     res = api_session.file_count()
-#     assert_that(res).schema_valid("file_list.json")
-#     assert res.json()["total"] == 58
+@pytest.mark.api
+@pytest.mark.parametrize("size", [58])
+def test_file(api_session, size):
+    resp = api_session.file_count()
+    with soft_assertions():
+        assert_that(resp.status_code).is_equal_to(200)
+        assert_that(resp.json()["total"]).is_equal_to(size)
 
 @pytest.mark.api
 def test_file_list_schema(api_session):
