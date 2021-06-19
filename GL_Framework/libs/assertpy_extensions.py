@@ -13,9 +13,9 @@ def schema_valid(self, schema_name: Optional[str], status_code: int = 200):
         self.error(f"Unexpected status code: {self.val.status_code} is NOT {status_code}!")
 
     try:
-        instance = self.val.text
+        instance = self.val.json()
         schema = schema_to_dict(schema_name)
-        jsonschema.validate(instance=instance, schema=schema)
+        jsonschema.validate(instance, schema)
     except jsonschema.ValidationError as validation_error:
         self.error(validation_error)
     return self

@@ -1,10 +1,13 @@
 {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
   "properties": {
     "items": {
       "type": "array",
-      "items": {
-        "additionalProperties": false,
-        "type": "object",
+      "items": [
+        {
+          "additionalProperties": false,
+          "type": "object",
           "properties": {
             "id": {
               "type": "string"
@@ -16,8 +19,7 @@
               "type": "string"
             },
             "created": {
-              "type": "string",
-              "format": "date-time"
+              "type": "string"
             },
             "content_type": {
               "type": "integer"
@@ -50,7 +52,8 @@
             "is_public",
             "parent_id"
           ]
-      }
+        }
+      ]
     },
     "name": {
       "type": "string"
