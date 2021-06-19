@@ -24,7 +24,7 @@ def test_invalide_login():
 
 @pytest.mark.api
 @pytest.mark.parametrize("size", [58])
-def test_file(api_session, size):
+def test_file_count(api_session, size):
     resp = api_session.file_count()
     with soft_assertions():
         assert_that(resp.status_code).is_equal_to(200)
