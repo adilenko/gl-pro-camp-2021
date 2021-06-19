@@ -4,15 +4,15 @@ from configuration.config import ConfigModel, get_config_variable_by_name
 from assertpy import assert_that, soft_assertions
 from helpers.fake import fake
 
-
+@pytest.mark.smoke
 def test_login():
     resp = ApiClient.loggin(
         get_config_variable_by_name(ConfigModel.user),
         get_config_variable_by_name(ConfigModel.password))
     assert_that(resp.status_code).is_equal_to(200)
 
-
-def test__invalide_login():
+@pytest.mark.smoke
+def test_invalide_login():
     name = fake.name()
     password = fake.password()
     resp = ApiClient.loggin(
@@ -27,6 +27,7 @@ def test__invalide_login():
 #     assert_that(res).schema_valid("file_list.json")
 #     assert res.json()["total"] == 58
 
+@pytest.mark.api
 def test_file_list_schema(api_session):
     res = api_session.get_files()
     assert_that(res).schema_valid("file_list.json")

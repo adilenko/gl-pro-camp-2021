@@ -4,8 +4,10 @@ import jsonschema
 from assertpy import add_extension
 from json import loads
 from constants import SCHEMAS_DIRECTORY
+import allure
 
 
+@allure.step("Validate json schema")
 def schema_valid(self, schema_name: Optional[str], status_code: int = 200):
     if self.val.status_code != status_code:
         self.error(f"Unexpected status code: {self.val.status_code} is NOT {status_code}!")
@@ -18,10 +20,6 @@ def schema_valid(self, schema_name: Optional[str], status_code: int = 200):
         self.error(validation_error)
     return self
 
-
-#
-# def get_resolver(file_name):
-#     return jsonschema.RefResolver(f"file:///{SWAGGER_DATA_DIRECTORY}/{file_name}", None)
 
 def schema_to_dict(file_name):
     with open(os.path.join(SCHEMAS_DIRECTORY, file_name)) as file:
