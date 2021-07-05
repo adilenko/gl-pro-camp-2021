@@ -4,5 +4,6 @@ class LocalConfig:
     user = "gl-procamp-2021@globallogic.com"
     password = "DXdUVEFNpHA8LXm"
     timeout = 2000
+    browser = "chrome"
 
 

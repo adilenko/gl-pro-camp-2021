@@ -20,13 +20,13 @@ def api_session():
 @pytest.fixture(scope="session")
 def ui_session():
     fixture = CosmoID(driver=BrowserProvider.get_browser(get_config_variable_by_name(ConfigModel.browser)))
-    try:
-        fixture.ensure_login(user=get_config_variable_by_name(ConfigModel.user))
-    except Exception as e:
-        logging.error("Loggin failed")
+    # try:
+    #     fixture.ensure_login(user=get_config_variable_by_name(ConfigModel.user))
+    # except Exception as e:
+    #     logging.error("Loggin failed")
     yield fixture
-    fixture.ensure_logout()
-    fixture.destroy()
+    # fixture.ensure_logout()
+    # fixture.destroy()
 
 
 
