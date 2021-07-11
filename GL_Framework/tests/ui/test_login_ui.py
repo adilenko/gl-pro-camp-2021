@@ -13,6 +13,8 @@ def ui_app(ui_session):
 
 @pytest.mark.ui
 def test_login_ui_possitive(ui_app):
+    ui_app.login_pege.open()
     user = get_config_variable_by_name(ConfigModel.user)
     ui_app.login_pege.login(get_config_variable_by_name(ConfigModel.user),
                             get_config_variable_by_name(ConfigModel.password))
+

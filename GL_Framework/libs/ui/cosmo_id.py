@@ -12,8 +12,9 @@ class CosmoID():
 
     def logout(self):
         self.login_pege.open()
-        if self.common_elements.logout_btn.is_displayed():
-            self.common_elements.logout_btn.click()
+        if not self.login_pege.login_page_url_is_open():
+            if self.common_elements.logout_btn.is_displayed():
+                self.common_elements.logout_btn.click()
         self.login_pege.login_page_url_is_open()
 
 

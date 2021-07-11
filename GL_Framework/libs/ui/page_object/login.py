@@ -21,12 +21,11 @@ class LoginPage(BasePage):
 
     def open(self):
         self.go_to(self.login_url)
-        self.wait_for_navigation_to_url(self.login_url)
         if self.close_annonce_btn.is_displayed():
             self.close_annonce_btn.click()
 
     def login_page_url_is_open(self):
-        self.wait_for_navigation_to_url(self.login_url)
+        return self.wait_for_navigation_to_url(self.login_url)
 
 
     def login(self, username, password):

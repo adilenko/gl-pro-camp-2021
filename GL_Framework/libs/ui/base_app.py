@@ -2,6 +2,7 @@ from libs.ui.browser_provider import BrowserProvider
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+import logging
 from configuration.config import get_config_variable_by_name, ConfigModel
 from constants import NAVIGATION_TIMOUT
 from urllib import parse
@@ -28,7 +29,8 @@ class BasePage:
                 return True
             time.sleep(0.1)
             current_time = time.time()
-        raise TimeoutError(f"Browser can not navigate to {expected_url}")
+        logging.error("Brauser can not  open login page")
+        return False
 
 
 
