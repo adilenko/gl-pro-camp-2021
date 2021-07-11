@@ -5,3 +5,5 @@ CONFIG_DIRECTORY = os.path.join(PROJECT_DIRECTORY, "configuration")
 CONFIG_FILE = os.path.join(CONFIG_DIRECTORY, "config.yaml")
 ENV_VAR_PREFIX: str = "FW_ENV_"
 SCHEMAS_DIRECTORY = os.path.join(PROJECT_DIRECTORY, "data_for_test", "schemas")
+DEFAULT_TIMEOUT = 3
+NAVIGATION_TIMOUT = 4

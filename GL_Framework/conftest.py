@@ -25,8 +25,8 @@ def ui_session():
     # except Exception as e:
     #     logging.error("Loggin failed")
     yield fixture
-    # fixture.ensure_logout()
-    # fixture.destroy()
+    fixture.driver.quit()
+
 
 
 

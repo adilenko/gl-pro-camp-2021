@@ -4,15 +4,15 @@ from assertpy import assert_that, soft_assertions
 from configuration.config import ConfigModel, get_config_variable_by_name
 
 
+
 @pytest.fixture
-def ui_app_loggout(ui_session):
-    # ui_session.logout()
+def ui_app(ui_session):
+    ui_session.logout()
     yield ui_session
 
 
 @pytest.mark.ui
-def test_login_ui_possitive(ui_app_loggout):
+def test_login_ui_possitive(ui_app):
     user = get_config_variable_by_name(ConfigModel.user)
-    ui_app_loggout.login_pege.open()
-    # ui_app_loggout.login_pege.login()
-    # assert_that(ui_app_loggout.login_pege.check_user_loged_in(user)).is_true()
+    ui_app.login_pege.login(get_config_variable_by_name(ConfigModel.user),
+                            get_config_variable_by_name(ConfigModel.password))

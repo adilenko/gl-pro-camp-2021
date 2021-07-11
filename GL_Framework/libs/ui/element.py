@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-import constants
+from constants import DEFAULT_TIMEOUT
 from configuration.config import ConfigModel, get_config_variable_by_name
 from libs.ui.base_app import BasePage
 
@@ -20,7 +20,7 @@ class Element():
         return self.find_element().text
 
 
-    def find_element(self, timeout=get_config_variable_by_name(ConfigModel().timeout)):
+    def find_element(self, timeout=DEFAULT_TIMEOUT):
         return self._wait(timeout=timeout).until(EC.presence_of_element_located(self.locator))
 
 
@@ -38,21 +38,21 @@ class Element():
         element.clear()
         element.send_keys(text)
 
-    def wait_for_visible(self, timeout=get_config_variable_by_name(ConfigModel().timeout)):
+    def wait_for_visible(self, timeout=DEFAULT_TIMEOUT):
         element = self._wait(timeout).until(EC.visibility_of_any_elements_located(self.locator))
         return element
 
-    def wait_for_clickable(self, timeout=get_config_variable_by_name(ConfigModel().timeout)):
+    def wait_for_clickable(self, timeout=DEFAULT_TIMEOUT):
         element = self._wait(timeout).until(EC.element_to_be_clickable(self.locator))
         return element
 
-    def _wait(self, timeout=get_config_variable_by_name(ConfigModel().timeout)):
+    def _wait(self, timeout=DEFAULT_TIMEOUT):
         wait = WebDriverWait(driver=self.driver, timeout=timeout, ignored_exceptions=(
             NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException,
             StaleElementReferenceException, ElementClickInterceptedException))
         return wait
 
-    def is_displayed(self, timeout=get_config_variable_by_name(ConfigModel().timeout)):
+    def is_displayed(self, timeout=DEFAULT_TIMEOUT):
         try:
             element = self.find_element(timeout=timeout)
             return element.is_displayed()
