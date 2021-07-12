@@ -13,12 +13,18 @@ class ConfigModel:
     port: str = "port"
     user: str = "user"
     password: str = "password"
+    browser: str = "browser"
     # properties which should be converted will be hidden
     _timeout: str = "timeout"
 
     @property
     def timeout(self):
-        return int(self._timeout) if self._timeout else None
+        if isinstance(self._timeout,int):
+            return self._timeout
+        if self._timeout.isdigit():
+            return int(self._timeout)
+        return self._timeout
+
 
 
 def get_local_config():
@@ -85,3 +91,4 @@ def get_config(yaml_conf_file=None):
 def get_config_variable_by_name(name, yaml_conf_file=None):
     config = get_config(yaml_conf_file)
     return config.__getattribute__(name)
+
